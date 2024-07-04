@@ -34,14 +34,14 @@ class _LoginScreenState extends State<LoginScreen> {
             kFormField(readonly: true ,title: "Email", hintText: "Enter valid email address", textEditingController: Get.find<EmailController>().email.value, context: context),
             Obx(() => kFormField(title: "Password", hintText: "Enter your password", textEditingController: Get.find<CreateAccountController>().passwordController.value, context: context, isPassword: true),),
             SizedBox(height: 5.h,),
-            Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(onPressed: (){
-                      Get.find<CreateAccountController>().changePasswordVisibility();
-                    }, child: Obx(() => Get.find<CreateAccountController>().isPasswordVisible.value ? Text("show password"): Text("hide password"),),),
-                  ],
-                ),
+            // Row(
+            //       mainAxisAlignment: MainAxisAlignment.end,
+            //       children: [
+            //         TextButton(onPressed: (){
+            //           Get.find<CreateAccountController>().changePasswordVisibility();
+            //         }, child: Obx(() => Get.find<CreateAccountController>().isPasswordVisible.value ? Text("show password"): Text("hide password"),),),
+            //       ],
+            //     ),
             SizedBox(
               height: MediaQuery.of(context).size.height*0.07,
             ),

@@ -25,7 +25,7 @@ class _GetStartedScreenState extends State<GetStartedScreen>
   void initState() {
     scrollController = ScrollController();
     animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 10))
+        AnimationController(vsync: this, duration: Duration(seconds: 20))
           ..addListener(() {
             final maxScrollExtend = scrollController.position.maxScrollExtent;
             final ScrollPosition = animation.value * maxScrollExtend;

@@ -62,16 +62,9 @@ class CreateAccountScreen extends StatelessWidget {
                       .confirmPasswordController
                       .value,
                   context: context,
-                  isPassword: true),),
+                  isConfirmPassword: true
+                  ),),
                 SizedBox(height: 5.h,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(onPressed: (){
-                      Get.find<CreateAccountController>().changePasswordVisibility();
-                    }, child: Obx(() => Get.find<CreateAccountController>().isPasswordVisible.value ? Text("show password"): Text("hide password"),),),
-                  ],
-                ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.07,
               ),
