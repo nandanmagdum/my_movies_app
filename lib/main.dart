@@ -6,7 +6,6 @@ import 'package:mitt_arv_movie_app/controllers/email_controller.dart';
 import 'package:mitt_arv_movie_app/controllers/loading_controller.dart';
 import 'package:mitt_arv_movie_app/controllers/otp_controller.dart';
 import 'package:mitt_arv_movie_app/pages/get_started_screen.dart';
-import 'package:mitt_arv_movie_app/helper/init_dependencies.dart';
 import 'package:mitt_arv_movie_app/pages/home_screen.dart';
 import 'package:mitt_arv_movie_app/services/storage_service.dart';
 
