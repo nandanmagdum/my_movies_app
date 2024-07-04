@@ -7,8 +7,12 @@ import 'package:mitt_arv_movie_app/controllers/loading_controller.dart';
 import 'package:mitt_arv_movie_app/controllers/otp_controller.dart';
 import 'package:mitt_arv_movie_app/pages/get_started_screen.dart';
 import 'package:mitt_arv_movie_app/helper/init_dependencies.dart';
+import 'package:mitt_arv_movie_app/pages/home_screen.dart';
+import 'package:mitt_arv_movie_app/services/storage_service.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await StorageService.init();
   runApp(MyApp());
 }
 
@@ -28,7 +32,7 @@ class MyApp extends StatelessWidget {
         }),
         theme: ThemeData.dark(),
         debugShowCheckedModeBanner: false,
-        home: GetStartedScreen(),
+        home: (StorageService.pref.getString(StorageService.JWTTOKEN) != null) ? HomeScreen() : GetStartedScreen(),
       ),
     );
   }

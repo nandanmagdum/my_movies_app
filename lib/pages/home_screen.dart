@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:mitt_arv_movie_app/constants/movie_card.dart';
+import 'package:mitt_arv_movie_app/pages/get_started_screen.dart';
+import 'package:mitt_arv_movie_app/services/storage_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,6 +16,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // floatingActionButton: FloatingActionButton(onPressed: (){
+      //   print("JWT TOKEN ");
+      //   print(StorageService.pref.getString(StorageService.JWTTOKEN));
+      // }, ),
       appBar: AppBar(
         leading: Icon(Icons.movie),
         title: TextFormField(
@@ -28,15 +35,40 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(
             width: 15.w,
           ),
-          Icon(
-            Icons.favorite,
-            color: Colors.red,
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.favorite,
+              color: Colors.red,
+            ),
           ),
           SizedBox(
             width: 15.w,
           ),
-          Icon(
-            Icons.logout,
+          IconButton(
+            onPressed: () {
+              Get.dialog(AlertDialog(
+                title: Text("Are you sure ? You want to Log out ?"),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        StorageService.pref.remove(StorageService.JWTTOKEN);
+                        StorageService.pref.remove(StorageService.EMAIL);
+                        print("Logged OUT");
+                        Get.off(GetStartedScreen());
+                      },
+                      child: Text("Yes")),
+                  TextButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child: Text("No")),
+                ],
+              ));
+            },
+            icon: Icon(
+              Icons.logout,
+            ),
           ),
           SizedBox(
             width: 15.w,

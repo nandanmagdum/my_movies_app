@@ -81,4 +81,24 @@ class ApiService {
       throw Exception(data);
     }
   }
+
+  static Future<String> loginUser() async{
+    print(Get.find<EmailController>().email.value.text);
+    print(Get.find<EmailController>().email.value.text);
+    final URI = Uri.parse(baseUrl+"auth/login");
+    final response = await http.post(URI, body: {
+      "email": Get.find<EmailController>().email.value.text,
+      "password": Get.find<CreateAccountController>().passwordController.value.text
+    });
+    final data = jsonDecode(response.body);
+    final statusCode = response.statusCode;
+    if(statusCode != 200){
+      throw Exception(data);
+    }
+    else {
+      print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+      print(data['token']);
+      return data['token'];
+    }
+  }
 }

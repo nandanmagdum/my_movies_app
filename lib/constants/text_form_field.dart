@@ -11,6 +11,7 @@ Column kFormField(
         required TextEditingController textEditingController,
         required BuildContext context,
         bool? isPassword,
+        bool? readonly,
         }) =>
     Column(
       children: [
@@ -29,6 +30,7 @@ Column kFormField(
           height: MediaQuery.of(context).size.height * 0.01,
         ),
         TextFormField(
+          readOnly: readonly ?? false,
           obscureText: isPassword?? false ? Get.find<CreateAccountController>().isPasswordVisible.value : false,
           controller: textEditingController,
           decoration: InputDecoration(
