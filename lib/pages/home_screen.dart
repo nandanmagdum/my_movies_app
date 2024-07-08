@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mitt_arv_movie_app/constants/movie_card.dart';
+import 'package:mitt_arv_movie_app/controllers/movie_controller.dart';
 import 'package:mitt_arv_movie_app/pages/get_started_screen.dart';
+import 'package:mitt_arv_movie_app/pages/movie_details_screen.dart';
+import 'package:mitt_arv_movie_app/services/movie_api_service.dart';
 import 'package:mitt_arv_movie_app/services/storage_service.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,13 +19,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // floatingActionButton: FloatingActionButton(onPressed: (){
-      //   print("JWT TOKEN ");
-      //   print(StorageService.pref.getString(StorageService.JWTTOKEN));
-      // }, ),
       appBar: AppBar(
         leading: Icon(Icons.movie),
         title: TextFormField(
+          onFieldSubmitted: (value) {
+            // call the search api
+            // get data
+            // create model data
+            // rebuilt complete home screen
+          },
+          controller: Get.find<MovieController>().search.value,
           decoration: InputDecoration(
               hintText: "Search Movies",
               border: OutlineInputBorder(
@@ -31,7 +37,66 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         actions: [
           IconButton(
-              onPressed: () {}, icon: Icon(Icons.settings_input_component)),
+
+              /// drop down menu code start
+              onPressed: () {
+                // show something
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return Container(
+                      padding: EdgeInsets.all(16),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ListTile(
+                            leading: Get.find<MovieController>().sortBy.value ==
+                                    "title"
+                                ? Icon(Icons.done)
+                                : null,
+                            title: Text('Title'),
+                            onTap: () => Navigator.pop(context, 'title'),
+                          ),
+                          ListTile(
+                            leading: Get.find<MovieController>().sortBy.value ==
+                                    "rank"
+                                ? Icon(Icons.done)
+                                : null,
+                            title: Text('Rank'),
+                            onTap: () => Navigator.pop(context, 'rank'),
+                          ),
+                          ListTile(
+                            leading: Get.find<MovieController>().sortBy.value ==
+                                    "rating"
+                                ? Icon(Icons.done)
+                                : null,
+                            title: Text('Rating'),
+                            onTap: () => Navigator.pop(context, 'rating'),
+                          ),
+                          ListTile(
+                            leading: Get.find<MovieController>().sortBy.value ==
+                                    "year"
+                                ? Icon(Icons.done)
+                                : null,
+                            title: Text('Year'),
+                            onTap: () => Navigator.pop(context, 'year'),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ).then((value) {
+                Get.find<MovieController>()
+                      .changeSortBy(sortCrieteria: value);
+                  print(Get.find<MovieController>().sortBy.value);
+                });
+                ;
+                // change the sorting crietetia
+                // just change the listview builder
+              },
+
+              /// drop down menu code end
+              icon: Icon(Icons.settings_input_component)),
           SizedBox(
             width: 15.w,
           ),
@@ -75,11 +140,55 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.all(15.w),
-        child: ListView.builder(
-          itemBuilder: (context, index) => MovieCard(),
-          itemCount: 10,
+      body: Obx(
+
+        () =>  FutureBuilder(
+          future: MovieApiService.getTopRatedMovies(
+              sortBy: Get.find<MovieController>().sortBy.value),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (snapshot.hasError) {
+              return Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Center(
+                  child: Text("${snapshot.error}"),
+                ),
+              );
+            }
+            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(child: Text("No movies found"));
+            }
+            if (snapshot.data == null) {
+              print(snapshot.error);
+              return Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Center(
+                  child: Text("${snapshot.error}"),
+                ),
+              );
+            }
+              return Padding(
+                padding: EdgeInsets.all(15.w),
+                child: ListView.builder(
+                  itemBuilder: (context, index) => GestureDetector(
+                    onTap: () {
+                      Get.to(MovieDetailsScreen(
+                        imdbID: snapshot.data![index].imdbid,
+                        movieName: snapshot.data![index].title,
+                      ));
+                    },
+                    child: MovieCard(
+                      model: snapshot.data![index],
+                    ),
+                  ),
+                  itemCount: snapshot.data!.length,
+                ),
+              );
+          },
         ),
       ),
     );

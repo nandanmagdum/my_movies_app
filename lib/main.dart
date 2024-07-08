@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:mitt_arv_movie_app/controllers/create_account_controller.dart';
 import 'package:mitt_arv_movie_app/controllers/email_controller.dart';
 import 'package:mitt_arv_movie_app/controllers/loading_controller.dart';
+import 'package:mitt_arv_movie_app/controllers/movie_controller.dart';
 import 'package:mitt_arv_movie_app/controllers/otp_controller.dart';
 import 'package:mitt_arv_movie_app/pages/get_started_screen.dart';
 import 'package:mitt_arv_movie_app/pages/home_screen.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
           Get.put(EmailController());
           Get.put(LoadingController());
           Get.put(OtpController());
+          Get.put(MovieController());
         }),
         theme: ThemeData.dark(),
         debugShowCheckedModeBanner: false,

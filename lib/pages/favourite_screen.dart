@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mitt_arv_movie_app/constants/movie_card.dart';
 import 'package:mitt_arv_movie_app/pages/movie_details_screen.dart';
 
 class FavouriteScreen extends StatefulWidget {
@@ -27,10 +26,11 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
         return GestureDetector(
           onTap: (){
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return MovieDetailsScreen();
+              return Text("1");
             },));
           },
-          child: MovieCard());
+          // child: MovieCard()
+          );
       },),
     ) );
   }

@@ -1,8 +1,16 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:mitt_arv_movie_app/models/movie_details_model.dart';
+import 'package:mitt_arv_movie_app/services/movie_api_service.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
-  const MovieDetailsScreen({super.key});
+  final String imdbID;
+  final String movieName;
+  const MovieDetailsScreen(
+      {super.key, required this.imdbID, required this.movieName});
 
   @override
   State<MovieDetailsScreen> createState() => _MovieDetailsScreenState();
@@ -13,74 +21,256 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Animal"),
+        title: Text(widget.movieName),
         actions: [
-          IconButton(onPressed: (){
-            print("favourite button clicked");
-          }, icon: Icon(Icons.favorite, color: Colors.red,),),
-          SizedBox(width: 10.w,),
+          IconButton(
+            onPressed: () {
+              print("favourite button clicked");
+            },
+            icon: Icon(
+              Icons.favorite,
+              color: Colors.red,
+            ),
+          ),
+          SizedBox(
+            width: 10.w,
+          ),
         ],
       ),
-      body: Padding(
-        padding:  EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+      body: FutureBuilder(
+        future: MovieApiService.getMovieByImdbId(imdbID: widget.imdbID),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          MovieDetailsModel movie = snapshot.data!;
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+            child: SingleChildScrollView(
+              child: Column(
                 children: [
-                  Text("Animal", style: TextStyle(fontSize: 38.sp),),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text("2024"),
-                  SizedBox(width: 15.w,),
-                  Text("PG"),
-                  SizedBox(width: 15.w,),
-                  Text("1h 41m"),
-              ],),
-              SizedBox(height: 10.h,),
-              Image.network("https://m.media-amazon.com/images/I/61OmlO9stnL._SX300_SY300_QL70_FMwebp_.jpg"),
-              SizedBox(height: 20.h,),
-              Divider(),
-              SizedBox(
-                // height: MediaQuery.of(context).size.height*0.1,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Column(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          movie.Title,
+                          style: TextStyle(fontSize: 38.sp),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(movie.Year),
+                      SizedBox(
+                        width: 15.w,
+                      ),
+                      Text(movie.Rated),
+                      SizedBox(
+                        width: 15.w,
+                      ),
+                      Text(movie.Runtime),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Image.network(movie.Poster),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Divider(),
+                  SizedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Icon(Icons.star, color: Colors.yellow,),
-                    Text("7.0/10"),
-                    Text("131106", style: TextStyle(fontSize: 12.sp, color: Colors.grey),),
+                        Column(
+                          children: [
+                            Icon(
+                              Icons.star,
+                              color: Colors.yellow,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(movie.imdbRating),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Icon(Icons.attach_money_rounded),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(movie.BoxOffice),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Icon(Icons.how_to_vote),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              movie.imdbVotes,
+                            ),
+                          ],
+                        ),
                       ],
                     ),
-                    Column(children: [
-                      Icon(Icons.people_outline_sharp),
-                      Text("165.789"),
-                    ],),
-
-                    Column(children: [
-                      Icon(Icons.video_library_outlined),
-                      Text("263876"),
-                    ],),
-                  ],
-                ),
-              ),
-              Divider(),
-              SizedBox(height: 20.h,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text("Description: ", style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold),),
+                  ),
+                  Divider(),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Description: ",
+                        style: TextStyle(
+                            fontSize: 22.sp, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  Text(movie.Plot),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "Released: ",
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
+                      Text(movie.Released),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "Genere: ",
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
+                      Text(movie.Genre),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "Languages: ",
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
+                      Text(movie.Language),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "Director: ",
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
+                      Text(movie.Director),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "Writer: ",
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
+                      Text(movie.Director),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "Actors: ",
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
+                      Text(movie.Actors),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "Country: ",
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
+                      Text(movie.Country),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "MetaScore: ",
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
+                      Text(movie.Metascore),
+                    ],
+                  ),
+                  SizedBox(height: 10,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text("Awards: ", style: TextStyle(color: Colors.yellow, fontSize: 18.sp, fontWeight: FontWeight.bold),),
+                      SizedBox(width: 10.w,),
+                      Flexible(child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(movie.Awards),
+                      )),
+                    ],
+                  ),
+                  SizedBox(height: 10.h,),  
                 ],
               ),
-              Text("Imprisoned in the 1940s for the double murder of his wife and her lover, upstanding banker Andy Dufresne begins a new life at the Shawshank prison, where he puts his accounting skills to work for an amoral warden. During his long stretch in prison, Dufresne comes to be admired by the other inmates -- including an older prisoner named Red -- for his integrity and unquenchable sense of hope."),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

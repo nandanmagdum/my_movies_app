@@ -1,0 +1,197 @@
+{
+    "node": {
+        "__typename": "Title",
+        "id": "tt22022452",
+        "titleText": {
+            "text": "Inside Out 2",
+            "isOriginalTitle": true
+        },
+        "originalTitleText": {
+            "text": "Inside Out 2",
+            "isOriginalTitle": true
+        },
+        "releaseYear": {
+            "__typename": "YearRange",
+            "year": 2024,
+            "endYear": null
+        },
+        "releaseDate": {
+            "__typename": "ReleaseDate",
+            "month": 6,
+            "day": 14,
+            "year": 2024,
+            "country": {
+                "id": "US"
+            },
+            "restriction": null,
+            "attributes": [],
+            "displayableProperty": {
+                "qualifiersInMarkdownList": null
+            }
+        },
+        "titleType": {
+            "__typename": "TitleType",
+            "id": "movie",
+            "text": "Movie",
+            "categories": [
+                {
+                    "id": "movie",
+                    "text": "Movie",
+                    "value": "movie"
+                }
+            ],
+            "canHaveEpisodes": false,
+            "isEpisode": false,
+            "isSeries": false,
+            "displayableProperty": {
+                "value": {
+                    "plainText": ""
+                }
+            }
+        },
+        "primaryImage": {
+            "__typename": "Image",
+            "id": "rm1568556801",
+            "url": "https://m.media-amazon.com/images/M/MV5BYTc1MDQ3NjAtOWEzMi00YzE1LWI2OWUtNjQ0OWJkMzI3MDhmXkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_.jpg",
+            "height": 6000,
+            "width": 4050
+        },
+        "metacritic": {
+            "metascore": {
+                "score": 73
+            }
+        },
+        "principalCredits": [
+            {
+                "credits": [
+                    {
+                        "name": {
+                            "__typename": "Name",
+                            "id": "nm0688132",
+                            "nameText": {
+                                "text": "Amy Poehler"
+                            },
+                            "primaryImage": {
+                                "__typename": "Image",
+                                "id": "rm2798412032",
+                                "url": "https://m.media-amazon.com/images/M/MV5BYjIzMDA0NmUtMTlhZi00ZDU3LTkzYWMtZDhkYTU1ZDJlMGRkXkEyXkFqcGdeQXVyNzcwODE0OTk@._V1_.jpg",
+                                "height": 2141,
+                                "width": 1877
+                            }
+                        }
+                    },
+                    {
+                        "name": {
+                            "__typename": "Name",
+                            "id": "nm1638321",
+                            "nameText": {
+                                "text": "Maya Hawke"
+                            },
+                            "primaryImage": {
+                                "__typename": "Image",
+                                "id": "rm2722504960",
+                                "url": "https://m.media-amazon.com/images/M/MV5BOGYzNjE2MDYtMjhhNi00MGE4LTk1ZDUtM2ZmODZlMmQ2ZjE3XkEyXkFqcGdeQXVyNjUxMjc1OTM@._V1_.jpg",
+                                "height": 960,
+                                "width": 1440
+                            }
+                        }
+                    },
+                    {
+                        "name": {
+                            "__typename": "Name",
+                            "id": "nm10143485",
+                            "nameText": {
+                                "text": "Kensington Tallman"
+                            },
+                            "primaryImage": {
+                                "__typename": "Image",
+                                "id": "rm3101445889",
+                                "url": "https://m.media-amazon.com/images/M/MV5BMmQzNmZiZTAtNWNhNC00NTc1LWFjZjMtNDgxOTAxNzczM2Y2XkEyXkFqcGdeQXVyOTMxMDE3MDQ@._V1_.jpg",
+                                "height": 1536,
+                                "width": 1024
+                            }
+                        }
+                    },
+                    {
+                        "name": {
+                            "__typename": "Name",
+                            "id": "nm0487594",
+                            "nameText": {
+                                "text": "Liza Lapira"
+                            },
+                            "primaryImage": {
+                                "__typename": "Image",
+                                "id": "rm2985790720",
+                                "url": "https://m.media-amazon.com/images/M/MV5BNTRlMmZmNzktZWRiMi00YWU3LWIxMmItMmNhOTRiOWEwZjNlXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_.jpg",
+                                "height": 395,
+                                "width": 466
+                            }
+                        }
+                    }
+                ]
+            }
+        ],
+        "certificate": {
+            "id": "ce5841731",
+            "ratingsBody": {
+                "id": "MPAA",
+                "text": "MPAA"
+            },
+            "ratingReason": "Rated PG for some thematic elements.",
+            "rating": "PG"
+        },
+        "plot": {
+            "id": "po6808995",
+            "plotText": {
+                "plainText": "A sequel that features Riley entering puberty and experiencing brand new, more complex emotions as a result. As Riley tries to adapt to her teenage years, her old emotions try to adapt to the possibility of being replaced."
+            }
+        },
+        "titleGenres": {
+            "__typename": "TitleGenres",
+            "genres": [
+                {
+                    "genre": {
+                        "genreId": "Animation",
+                        "text": "Animation"
+                    }
+                },
+                {
+                    "genre": {
+                        "genreId": "Adventure",
+                        "text": "Adventure"
+                    }
+                },
+                {
+                    "genre": {
+                        "genreId": "Comedy",
+                        "text": "Comedy"
+                    }
+                },
+                {
+                    "genre": {
+                        "genreId": "Drama",
+                        "text": "Drama"
+                    }
+                },
+                {
+                    "genre": {
+                        "genreId": "Family",
+                        "text": "Family"
+                    }
+                },
+                {
+                    "genre": {
+                        "genreId": "Fantasy",
+                        "text": "Fantasy"
+                    }
+                }
+            ]
+        },
+        "ratingsSummary": {
+            "aggregateRating": 7.9
+        },
+        "canRate": {
+            "isRatable": true
+        }
+    }
+}
