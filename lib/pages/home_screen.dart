@@ -6,6 +6,7 @@ import 'package:mitt_arv_movie_app/controllers/movie_controller.dart';
 import 'package:mitt_arv_movie_app/pages/favourite_screen.dart';
 import 'package:mitt_arv_movie_app/pages/get_started_screen.dart';
 import 'package:mitt_arv_movie_app/pages/movie_details_screen.dart';
+import 'package:mitt_arv_movie_app/services/api_service.dart';
 import 'package:mitt_arv_movie_app/services/movie_api_service.dart';
 import 'package:mitt_arv_movie_app/services/storage_service.dart';
 
@@ -20,8 +21,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // floatingActionButton: FloatingActionButton(onPressed: () {
-      //   print(Get.find<MovieController>().search.value.text);
+      // floatingActionButton: FloatingActionButton(onPressed: () async{
+      //   await ApiService.getFavFromDB();
       // }),
       appBar: AppBar(
         leading: Icon(Icons.movie),
@@ -121,7 +122,8 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 15.w,
           ),
           IconButton(
-            onPressed: () {
+            onPressed: () async {
+              ApiService.setFavToDB();
               Get.dialog(AlertDialog(
                 title: Text("Are you sure ? You want to Log out ?"),
                 actions: [
@@ -187,6 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemBuilder: (context, index) => GestureDetector(
                         onTap: () {
                           Get.to(MovieDetailsScreen(
+                            fromFavourite: false,
                             imdbID: snapshot.data![index].imdbid,
                             movieName: snapshot.data![index].title,
                           ));
@@ -234,6 +237,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemBuilder: (context, index) => GestureDetector(
                         onTap: () {
                           Get.to(MovieDetailsScreen(
+                            fromFavourite: false,
                             imdbID: snapshot.data![index].imdbid,
                             movieName: snapshot.data![index].title,
                           ));

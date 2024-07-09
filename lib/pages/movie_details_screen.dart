@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:mitt_arv_movie_app/models/general_movie.dart';
 import 'package:mitt_arv_movie_app/models/movie_details_model.dart';
 import 'package:mitt_arv_movie_app/services/movie_api_service.dart';
 import 'package:mitt_arv_movie_app/services/storage_service.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
+  final bool fromFavourite;
   final String imdbID;
   final String movieName;
   const MovieDetailsScreen(
-      {super.key, required this.imdbID, required this.movieName});
+      {super.key, required this.imdbID, required this.movieName, required this.fromFavourite});
 
   @override
   State<MovieDetailsScreen> createState() => _MovieDetailsScreenState();
@@ -23,6 +25,14 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
       //   print(StorageService.pref.getStringList(StorageService.LIKED));
       // }),
       appBar: AppBar(
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios_new), onPressed: (){
+         if(widget.fromFavourite){
+          Get.back();
+          Get.back();
+         } else {
+          Get.back();
+         }
+        },),
         title: Text(widget.movieName),
         actions: [
           IconButton(
@@ -35,7 +45,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
               }
               StorageService.pref.setStringList(StorageService.LIKED, liked);
               setState(() {
-                
               });
             },
             icon: Icon(
@@ -61,7 +70,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
               child: CircularProgressIndicator(),
             );
           }
-          MovieDetailsModel movie = snapshot.data!;
+          MovieDetailsModel movie = snapshot.data ?? MovieDetailsModel.fromJson(generalMovie);
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
             child: SingleChildScrollView(
@@ -95,7 +104,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   SizedBox(
                     height: 10.h,
                   ),
-                  Image.network(movie.Poster),
+                  (movie.Poster != "N/A")? Image.network(movie.Poster) : Image.asset("assets/movie.jpg"),
                   SizedBox(
                     height: 20.h,
                   ),
@@ -177,10 +186,12 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       SizedBox(
                         width: 5,
                       ),
-                      Text(
-                        "Genere: ",
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.bold),
+                      Flexible(
+                        child: Text(
+                          "Genere: ",
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.bold),
+                        ),
                       ),
                       Text(movie.Genre),
                     ],
@@ -196,7 +207,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.bold),
                       ),
-                      Text(movie.Language),
+                      Flexible(child: Text(movie.Language)),
                     ],
                   ),
                   Row(
@@ -210,7 +221,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.bold),
                       ),
-                      Text(movie.Director),
+                      Flexible(child: Text(movie.Director)),
                     ],
                   ),
                   Row(
@@ -224,7 +235,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.bold),
                       ),
-                      Text(movie.Director),
+                      Flexible(child: Text(movie.Director)),
                     ],
                   ),
                   Row(
@@ -238,7 +249,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.bold),
                       ),
-                      Text(movie.Actors),
+                      Flexible(child: Text(movie.Actors)),
                     ],
                   ),
                   Row(
@@ -252,7 +263,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.bold),
                       ),
-                      Text(movie.Country),
+                      Flexible(child: Text(movie.Country)),
                     ],
                   ),
                   Row(

@@ -66,6 +66,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                   itemBuilder: (context, index) => GestureDetector(
                     onTap: () {
                       Get.to(MovieDetailsScreen(
+                        fromFavourite: true,
                         imdbID: snapshot.data![index].imdbID,
                         movieName: snapshot.data![index].Title,
                       ));

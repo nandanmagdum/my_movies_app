@@ -57,6 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   // save token in local storage
                   StorageService.pref.setString(StorageService.JWTTOKEN, token);
                   StorageService.pref.setString(StorageService.EMAIL, Get.find<EmailController>().email.value.text);
+                  await ApiService.getFavFromDB();
                   print("jwt token saved");
                   // get off to home page
                   Get.off(HomeScreen());

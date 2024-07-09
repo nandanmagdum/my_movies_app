@@ -19,10 +19,10 @@ class MovieCard extends StatelessWidget {
           Text(model.title, style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold, color: Colors.yellow),textAlign: TextAlign.start,),
           Divider(),
           SizedBox(height: 10.h,),
-          Image.network(model.image_url,
+          (model.image_url != "N/A")? Image.network(model.image_url,
           height: MediaQuery.of(context).size.height*0.4,
           width: MediaQuery.of(context).size.width,
-          ),
+          ) : Image.asset("assets/movie.jpg"),
           SizedBox(height: 10.h,),
         SizedBox(
           width: MediaQuery.of(context).size.width*0.8,

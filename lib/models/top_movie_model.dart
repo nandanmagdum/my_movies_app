@@ -10,12 +10,12 @@ class TopRatedMovieModel {
 
   factory TopRatedMovieModel.fromJson(Map<String, dynamic> json) {
     return TopRatedMovieModel(
-      title: json['title'] as String, 
-      image_url: json['image'] as String, 
-      rank: json['rank'] as int, 
-      rating: json['rating'] as String, 
+      title: json['title'] ?? "", 
+      image_url: json['image'] ?? "", 
+      rank: json['rank'] ?? 0, 
+      rating: json['rating'] ?? "", 
       year: json['year'].toString(),
-      imdbid: json['imdbid'] as String
+      imdbid: json['imdbid'] ?? ""
       );
   }
 }

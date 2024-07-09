@@ -18,7 +18,7 @@ class MovieApiService {
   static const String base_url_top_rated =
       "https://imdb-top-100-movies.p.rapidapi.com/";
   static const String api_key_top_rated =
-      "7a5523559emsh0a2dc5c358d6386p1ffa4bjsnfd53cc8896c5";
+      "678ba3466amsh2a27f2f076545d9p1f5a0ajsnd5577aedb2d3";
 
   /// OMDB API
   static const String omdb_base_url = "http://www.omdbapi.com/?apikey=8c1e856&";
@@ -26,11 +26,14 @@ class MovieApiService {
   /// get all top rated movies
   static Future<List<TopRatedMovieModel>> getTopRatedMovies({String? sortBy}) async{
     final URI = Uri.parse(base_url_top_rated);
-    print(base_url_top_rated);
     final response = await http.get(URI, headers: {
       "X-RapidAPI-Key": api_key_top_rated
     });
     final data = jsonDecode(response.body); // List<dynamic>
+    if(response.statusCode != 200){
+      print(data);
+      throw Exception(data);
+    }
     // convert list<dynamic> to List<Map<String, dynamic>>
     List<Map<String, dynamic>> listmap = [];
     for(int i=0; i<data.length; i++)
