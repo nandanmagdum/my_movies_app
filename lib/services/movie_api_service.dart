@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:mitt_arv_movie_app/controllers/movie_controller.dart';
 import 'package:mitt_arv_movie_app/models/movie_details_model.dart';
 import 'package:mitt_arv_movie_app/models/top_movie_model.dart';
+import 'package:mitt_arv_movie_app/services/storage_service.dart';
 
 class MovieApiService {
   /// Rapid API for popular
@@ -17,10 +18,10 @@ class MovieApiService {
   static const String base_url_top_rated =
       "https://imdb-top-100-movies.p.rapidapi.com/";
   static const String api_key_top_rated =
-      "95f65ebb73msh3eb809aec4391acp124bfcjsn68069ab9bf86";
+      "7a5523559emsh0a2dc5c358d6386p1ffa4bjsnfd53cc8896c5";
 
   /// OMDB API
-  static const String omdb_base_url = "http://www.omdbapi.com/?apikey=8c1e856";
+  static const String omdb_base_url = "http://www.omdbapi.com/?apikey=8c1e856&";
 
   /// get all top rated movies
   static Future<List<TopRatedMovieModel>> getTopRatedMovies({String? sortBy}) async{
@@ -39,7 +40,7 @@ class MovieApiService {
         "image": data[i]['image'] as String,
         "rank": data[i]['rank'] as int,
         "rating": data[i]['rating'] as String,
-        "year": data[i]['year'] as int,
+        "year": data[i]['year'].toString() as String,
         "imdbid": data[i]['imdbid'] as String
       });
     }
@@ -75,5 +76,48 @@ class MovieApiService {
     if(response.statusCode == 200)
     return MovieDetailsModel.fromJson(data);
     throw Exception(data);
+  }
+
+  /// get favourite movies from imdb id list
+  static Future<List<MovieDetailsModel>> getFavouriteMovies() async{
+    List<String> liked = StorageService.pref.getStringList(StorageService.LIKED) ?? <String>[];
+    List<MovieDetailsModel> likedMovies = <MovieDetailsModel>[];
+    for(int i=0; i<liked.length; i++)
+    {
+      final URI = Uri.parse("http://www.omdbapi.com/?apikey=8c1e856&i=${liked[i]}");
+      final response = await http.get(URI);
+      final data = jsonDecode(response.body);
+      final movie = MovieDetailsModel.fromJson(data);
+      likedMovies.add(movie);
+    }
+    return likedMovies;
+  }
+
+  /// search by name
+  static Future<List<TopRatedMovieModel>> getMovieByName() async 
+  {
+    final URI = Uri.parse(omdb_base_url+"s=${Get.find<MovieController>().search.value.text}");
+    final response = await http.get(URI);
+    final completeData = jsonDecode(response.body);
+    print(completeData);
+    final data = completeData['Search'];
+    print("))))))))))))))))))))))))))))))))))))))))))))))");
+    print(data);
+    // convert List<dynamic> to List<Map<String, dynamic>>
+    List<Map<String, dynamic>> jsonMovies = [];
+    for(int i=0; i<data.length; i++)
+    {
+      jsonMovies.add({
+        "title": data[i]['Title'] as String,
+        "image": data[i]['Poster'] as String,
+        "rank": 0,
+        "rating": "",
+        "year": data[i]['Year'] as String,
+        "imdbid": data[i]['imdbID'] as String
+      });
+    }
+    // List<Map<String, dynamic>> to List<TopRatedMovieModel>
+    List<TopRatedMovieModel> finalMovies = jsonMovies.map((e) => TopRatedMovieModel.fromJson(e),).toList();
+    return finalMovies;
   }
 }

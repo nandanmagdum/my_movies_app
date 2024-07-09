@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mitt_arv_movie_app/constants/movie_card.dart';
 import 'package:mitt_arv_movie_app/controllers/movie_controller.dart';
+import 'package:mitt_arv_movie_app/pages/favourite_screen.dart';
 import 'package:mitt_arv_movie_app/pages/get_started_screen.dart';
 import 'package:mitt_arv_movie_app/pages/movie_details_screen.dart';
 import 'package:mitt_arv_movie_app/services/movie_api_service.dart';
@@ -19,14 +20,21 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // floatingActionButton: FloatingActionButton(onPressed: () {
+      //   print(Get.find<MovieController>().search.value.text);
+      // }),
       appBar: AppBar(
         leading: Icon(Icons.movie),
         title: TextFormField(
-          onFieldSubmitted: (value) {
-            // call the search api
-            // get data
-            // create model data
-            // rebuilt complete home screen
+          onFieldSubmitted: (value) async {
+            final data = await MovieApiService.getMovieByName();
+            print(data);
+            setState(() {});
+          },
+          onChanged: (value) async {
+            final data = await MovieApiService.getMovieByName();
+            print(data);
+            setState(() {});
           },
           controller: Get.find<MovieController>().search.value,
           decoration: InputDecoration(
@@ -86,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   },
                 ).then((value) {
-                Get.find<MovieController>()
+                  Get.find<MovieController>()
                       .changeSortBy(sortCrieteria: value);
                   print(Get.find<MovieController>().sortBy.value);
                 });
@@ -101,7 +109,9 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 15.w,
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.to(FavouriteScreen());
+            },
             icon: Icon(
               Icons.favorite,
               color: Colors.red,
@@ -141,55 +151,102 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: Obx(
-
-        () =>  FutureBuilder(
-          future: MovieApiService.getTopRatedMovies(
-              sortBy: Get.find<MovieController>().sortBy.value),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (snapshot.hasError) {
-              return Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Center(
-                  child: Text("${snapshot.error}"),
-                ),
-              );
-            }
-            if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(child: Text("No movies found"));
-            }
-            if (snapshot.data == null) {
-              print(snapshot.error);
-              return Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Center(
-                  child: Text("${snapshot.error}"),
-                ),
-              );
-            }
-              return Padding(
-                padding: EdgeInsets.all(15.w),
-                child: ListView.builder(
-                  itemBuilder: (context, index) => GestureDetector(
-                    onTap: () {
-                      Get.to(MovieDetailsScreen(
-                        imdbID: snapshot.data![index].imdbid,
-                        movieName: snapshot.data![index].title,
-                      ));
-                    },
-                    child: MovieCard(
-                      model: snapshot.data![index],
+        () => Get.find<MovieController>().search.value.text.isEmpty
+            ? FutureBuilder(
+                future: MovieApiService.getTopRatedMovies(
+                    sortBy: Get.find<MovieController>().sortBy.value),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.hasError) {
+                    return Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Center(
+                        child: Text("${snapshot.error}"),
+                      ),
+                    );
+                  }
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(child: Text("No movies found"));
+                  }
+                  if (snapshot.data == null) {
+                    print(snapshot.error);
+                    return Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Center(
+                        child: Text("${snapshot.error}"),
+                      ),
+                    );
+                  }
+                  return Padding(
+                    padding: EdgeInsets.all(15.w),
+                    child: ListView.builder(
+                      itemBuilder: (context, index) => GestureDetector(
+                        onTap: () {
+                          Get.to(MovieDetailsScreen(
+                            imdbID: snapshot.data![index].imdbid,
+                            movieName: snapshot.data![index].title,
+                          ));
+                        },
+                        child: MovieCard(
+                          model: snapshot.data![index],
+                        ),
+                      ),
+                      itemCount: snapshot.data!.length,
                     ),
-                  ),
-                  itemCount: snapshot.data!.length,
-                ),
-              );
-          },
-        ),
+                  );
+                },
+              )
+            : FutureBuilder(
+                future: MovieApiService.getMovieByName(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.hasError) {
+                    return Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Center(
+                        child: Text("${snapshot.error}"),
+                      ),
+                    );
+                  }
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(child: Text("No movies found"));
+                  }
+                  if (snapshot.data == null) {
+                    print(snapshot.error);
+                    return Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Center(
+                        child: Text("${snapshot.error}"),
+                      ),
+                    );
+                  }
+                  return Padding(
+                    padding: EdgeInsets.all(15.w),
+                    child: ListView.builder(
+                      itemBuilder: (context, index) => GestureDetector(
+                        onTap: () {
+                          Get.to(MovieDetailsScreen(
+                            imdbID: snapshot.data![index].imdbid,
+                            movieName: snapshot.data![index].title,
+                          ));
+                        },
+                        child: MovieCard(
+                          model: snapshot.data![index],
+                        ),
+                      ),
+                      itemCount: snapshot.data!.length,
+                    ),
+                  );
+                },
+              ),
       ),
     );
   }

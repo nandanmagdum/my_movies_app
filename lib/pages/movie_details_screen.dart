@@ -1,10 +1,9 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mitt_arv_movie_app/models/movie_details_model.dart';
 import 'package:mitt_arv_movie_app/services/movie_api_service.dart';
+import 'package:mitt_arv_movie_app/services/storage_service.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   final String imdbID;
@@ -20,16 +19,33 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // floatingActionButton: FloatingActionButton(onPressed: (){
+      //   print(StorageService.pref.getStringList(StorageService.LIKED));
+      // }),
       appBar: AppBar(
         title: Text(widget.movieName),
         actions: [
           IconButton(
             onPressed: () {
-              print("favourite button clicked");
+              List<String> liked = StorageService.pref.getStringList(StorageService.LIKED) ?? <String>[];
+              if(liked.contains(widget.imdbID)){
+                liked.remove(widget.imdbID);
+              }else {
+                liked.add(widget.imdbID);
+              }
+              StorageService.pref.setStringList(StorageService.LIKED, liked);
+              setState(() {
+                
+              });
             },
             icon: Icon(
               Icons.favorite,
-              color: Colors.red,
+              color: StorageService.pref
+                          .getStringList(StorageService.LIKED)
+                          ?.contains(widget.imdbID) ??
+                      false
+                  ? Colors.red
+                  : Colors.white,
             ),
           ),
           SizedBox(
@@ -253,19 +269,32 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       Text(movie.Metascore),
                     ],
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text("Awards: ", style: TextStyle(color: Colors.yellow, fontSize: 18.sp, fontWeight: FontWeight.bold),),
-                      SizedBox(width: 10.w,),
-                      Flexible(child: Padding(
+                      Text(
+                        "Awards: ",
+                        style: TextStyle(
+                            color: Colors.yellow,
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Flexible(
+                          child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(movie.Awards),
                       )),
                     ],
                   ),
-                  SizedBox(height: 10.h,),  
+                  SizedBox(
+                    height: 10.h,
+                  ),
                 ],
               ),
             ),

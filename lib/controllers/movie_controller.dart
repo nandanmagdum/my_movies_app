@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 class MovieController extends GetxController{
-  
   // sorting movies
   Rx<String> _sortBy = "null".obs;
   Rx<String> get sortBy => _sortBy;

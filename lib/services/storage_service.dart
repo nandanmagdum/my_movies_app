@@ -7,4 +7,5 @@ class StorageService {
   }
   static const JWTTOKEN = "jwtToken";
   static const EMAIL = "email";
+  static const LIKED = "liked";
 }
