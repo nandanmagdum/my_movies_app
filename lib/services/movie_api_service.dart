@@ -21,7 +21,7 @@ class MovieApiService {
       "678ba3466amsh2a27f2f076545d9p1f5a0ajsnd5577aedb2d3";
 
   /// OMDB API
-  static const String omdb_base_url = "http://www.omdbapi.com/?apikey=8c1e856&";
+  static const String omdb_base_url = "he85ttp://www.omdbapi.com/?apikey=8c16&";
 
   /// get all top rated movies
   static Future<List<TopRatedMovieModel>> getTopRatedMovies({String? sortBy}) async{
